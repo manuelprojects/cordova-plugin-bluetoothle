@@ -2925,7 +2925,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
           JSONArray jsArray = new JSONArray();
           for (int i=0; i < uuids.size(); i++) {
-            jsArray.put(uuids.get(i).toString());
+            jsArray.put(uuids.get(i).toString().toUpperCase());
           }
           addProperty(advertisment, keyServiceUuids, jsArray);
           addProperty(returnObj, keyAdvertisement, advertisment);
