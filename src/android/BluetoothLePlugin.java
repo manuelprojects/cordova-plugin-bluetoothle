@@ -693,6 +693,11 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
     AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
 
+
+    String deviceName = obj.optString("name", "Unknonw");
+    bluetoothAdapter.setName(deviceName);
+
+
     String modeS = obj.optString("mode", "balanced");
     int mode = AdvertiseSettings.ADVERTISE_MODE_BALANCED;
     if (modeS.equals("lowLatency")) {
@@ -2902,12 +2907,27 @@ public class BluetoothLePlugin extends CordovaPlugin {
           if (scanCallbackContext == null)
             return;
 
+          if(result.getScanRecord().getServiceUuids() == null)
+            return;
+
+
           JSONObject returnObj = new JSONObject();
 
           addDevice(returnObj, result.getDevice());
           addProperty(returnObj, keyRssi, result.getRssi());
-          addPropertyBytes(returnObj, keyAdvertisement, result.getScanRecord().getBytes());
           addProperty(returnObj, keyStatus, statusScanResult);
+
+
+          JSONObject advertisment = new JSONObject();
+          List<ParcelUuid> uuids = result.getScanRecord().getServiceUuids();
+
+          JSONArray jsArray = new JSONArray();
+          for (int i=0; i < uuids.size(); i++) {
+            jsArray.put(uuids.get(i).toString());
+          }
+          addProperty(advertisment, keyServiceUuids, jsArray);
+          addProperty(returnObj, keyAdvertisement, advertisment);
+
 
           PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
           pluginResult.setKeepCallback(true);
