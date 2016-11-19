@@ -128,6 +128,8 @@ public class BluetoothLePlugin extends CordovaPlugin {
   private final String keyDiscoveredState = "discoveredState";
   private final String keyConnectionPriority = "connectionPriority";
   private final String keyMtu = "mtu";
+  private final String keyServiceUuids = "serviceUuids";
+
 
   //Write Types
   private final String writeTypeNoResponse = "noResponse";
@@ -1656,7 +1658,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
         boolean bool = ((Boolean) localMethod.invoke(localBluetoothGatt, new Object[0])).booleanValue();
         return bool;
       }
-    } 
+    }
     catch (Exception localException) {
       Log.e("BLE", "An exception occured while refreshing device cache");
     }
